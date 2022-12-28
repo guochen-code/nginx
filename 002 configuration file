@@ -1,0 +1,19 @@
+# find the configuration file
+cd etc/nginx
+ls -> nginx.conf
+nano nginx.conf # open the file
+
+# or
+ps -ef --forest | grep nginx 
+
+# if you make changes in the nginx.conf, you need to restart for it to take effective
+systemctl restart nginx
+
+********************************************
+# show error log
+ls -l /var/log/nginx/error.log
+
+user                    nginx;                           # worker name??
+error_log               /var/log/nginx/error.log warn;   # path of error log
+pid                     /var/run/nginx.pid;              # master process pid
+worker_processes        auto;                            # detect how many CPUs, "auto" can be replaced with a number like "2", so that will be 2 workers
