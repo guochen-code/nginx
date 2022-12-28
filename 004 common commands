@@ -10,3 +10,14 @@ nginx -v
 
 ********** include directives
 include       conf.d/*.conf; # all files under conf.d ended with .conf will be included in the http section
+
+
+
+
+********** show which port
+netstat -ntlp
+
+# default port is 80, but you can change it in the configuration file
+# if changed, for example to 8080
+# in your web browser, you should use https://50.16.46.226:8080 instead of https://50.16.46.226, which does not work anymore!
+
