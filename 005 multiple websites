@@ -1,1 +1,38 @@
+the default server blocks can be good enough for a single domain based website
+for multiple domain based websites, we have to create multiple server blocks
+
+(1) cd /etc/nginx/conf.d
+(2) cat default.conf
+(3) create a new file: nano kplabs.conf; copy and paste the existing server block from default.conf and 
+                                                                                          made corresponding modifications such as server_name and location-root
+  (a) create a new server block and in the server_name, you specify the new domain name: kplabs.internal
+  (b) under location, refer to the new html folder: root /usr/share/nginx/html/kplabs;
+                                                    index index.html index.html;
+(4) cd /usr/share/nginx/html/
+(5) create a new folder: mkdir kplabs
+(6) cd kplabs
+(7) nano index.html; type in "this is the kplabs website"
+# up to now, cd /etc/nginx/conf.d/
+# ls -> default.conf kplabs.conf
+(8) nginx -t # test new confifuration
+
+# what we want is that we want a request to go to the domain kplabs, but there is no public domain called kplabs available
+# so we will need to modify the ETC host directly of the Linux server itself
+# we will add a local host for the domain
+(1) nano /etc/hosts
+(2) add into the file and save: 127.0.0.1 kplabs.internal
+# so basically, anytime we make a request to this domain kplabs.internal, it should be directed to this local host IP 127.0.0.1 which is the same server
+
+curl localhost -> ok
+curl kplabs.internal -> this is the kplabs website
+
+
+*********************** set up loggoing
+(1) nano kplabs.conf
+(2) modify the file and save: access_log /var/log/nginx/kplabs.access.log main;
+(3) systemctl restart nginx
+(4) curl kplabs.internal -> this is the kplabs website.
+(5) cd /var/log/nginx
+(6) ls -> kplabs.access.log ..... and more.....
+(7) cat kplabs.access.log
 
