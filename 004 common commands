@@ -1,0 +1,12 @@
+nginx -v
+
+-v: print version
+-V: print version, compiler version and configure parameters
+-t: don't run, just test the configuration file
+-c: specify which configuration file NGINX should use instead of the default
+-h: show help
+
+
+
+********** include directives
+include       conf.d/*.conf; # all files under conf.d ended with .conf will be included in the http section
