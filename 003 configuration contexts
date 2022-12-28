@@ -8,3 +8,7 @@ events {
     worker_connections  1024;
 } # max simultaneous connections that can be opened by a worker process
 
+http context:
+directives:
+(1) log_format: defines the format of the logs and associated parameters
+(2) access_log: list of requests that users have made to your web-server
