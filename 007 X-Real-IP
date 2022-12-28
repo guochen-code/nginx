@@ -1,0 +1,6 @@
+what is the problem?
+by default, the backeend server gets all the requests from Reverse Proxy server and all the access logs will have Nginx IP.
+for many use-cases where binding needs to be done at Client IP level, this will be a problem.
+
+the ideal way of doing things:
+in this approach, you configure server in a way that the actual Client IP is logged in the access log file of the backend server.
