@@ -4,3 +4,7 @@ for many use-cases where binding needs to be done at Client IP level, this will 
 
 the ideal way of doing things:
 in this approach, you configure server in a way that the actual Client IP is logged in the access log file of the backend server.
+
+2 important configuration
+- reverse proxy : proxy_set_header X-Real-IP $remote_addr;
+- backend server : $http_x_real_ip;
