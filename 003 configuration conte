@@ -1,0 +1,10 @@
+nginx configuration file is divided across range of contexts (sections)
+each context contains its own set of directives to control specific aspect of Nginx
+
+
+contexts: main / events / http /mail
+
+events {
+    worker_connections  1024;
+} # max simultaneous connections that can be opened by a worker process
+
