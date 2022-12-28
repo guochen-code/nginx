@@ -1,0 +1,25 @@
+# install nginx
+yum install nginx
+
+# check version
+nginx -V
+
+*************************************************
+# if you want specific version
+wget https://nginx.org/packages/.......
+# if no wget command, install wget
+yum -y install wget
+
+# before install, remove installed one
+yum -y remove nginx
+
+ls -> nginx-1.20.1-1.el8.ngx.x86_64.rpm # in the download folder
+
+yum install nginx-1.20.1-1.el8.ngx.x86_64.rpm
+
+*****************************************************
+# check status
+systemctl status nginx -> inactive(dead)
+# start 
+systemctl start nginx
+systemctl enable nginx # automatically starts if we restart the server
