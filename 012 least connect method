@@ -1,0 +1,22 @@
+default is round-robin
+2 servers, requests will be evenly distributed to each server
+
+but sometimes it is not efficient, for instance:
+
+server 1 has big PHP, which takes 20 seconds to execute
+server 2 has small PHP, which takes 1 second to execute
+request A to server 1 and request B to server, what about request C. It should go to server 2 because server 1 is busy
+
+how to configure:
+
+(1) nano /etc/nginx/conf.d/web.conf
+upstream backend {
+  least conn;
+  server 52.4.121.83;
+  server 52.3.20.56'
+}
+
+(2) open access.log to see how many requests come to each server
+tail -f /var/log/nginx/access.log
+
+(3) send requests: ab -n 20 -c 10 52.6.237.228/
