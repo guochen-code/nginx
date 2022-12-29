@@ -1,0 +1,3 @@
+unequal distribution of traffic
+server weight allows us to customize the request flow between Nginx acting as a load balancer to the upstream backends.
+
