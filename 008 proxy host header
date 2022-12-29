@@ -1,0 +1,35 @@
+what is the problem?
+by default, the host header that is received at the Reverse Proxy level is not forwarded to the backend server.
+
+problem happens when?
+if backend server is hosting application associated with multiple websites/domains, there is no way for it to know the original domain requested by the client.
+
+1 important configuration
+go to: nano /etc/nginx/conf.d/proxy.conf
+reverse proxy - proxy_set_header Host $host
+
+************ to check details
+in the application server: yum -y install tcpdump
+
+in tmp folder: echo > headers # create a file called headers
+run the command in the application server: tcpdump -A -vvvv -s 9999 -i eth1 port 80 > /tmp/headers # overwrite if run again.      # eth1 because of private ip
+
+in the proxy server, run: curl kplabs.internal
+
+back to application server, run: cat headers -> you can see in the file: Host: kplabs.internal
+
+******************* example
+proxy.conf ->
+proxy_set_header Host $host;
+  listen 80;
+  server name localhost;
+  
+  location / {
+      proxy_pass http://10.139.0.3;           # eth1 because of this private ip. If different ip, use different eth number !!!!!!
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header Host $host;          # can be changed to "proxy_set_header Chen $host", will see corresponding change in: cat headers
+    }
+    location / admin {
+        proxy_pass http://139.59.11.125;
+      }
+  }
