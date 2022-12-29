@@ -1,3 +1,26 @@
 unequal distribution of traffic
 server weight allows us to customize the request flow between Nginx acting as a load balancer to the upstream backends.
 
+sample configuration:
+upstream backend {
+  server 10.139.0.3;
+  server 10.139.0.4 weight=2; # 2 requests will come here while 1 request will go to the other
+  
+server {
+  listen     80;
+  .....
+  }
+}
+
+where to find the configuration file:
+cd /etc/nginx/conf.d/
+nano load-balancer.conf
+
+*********** for testing and see the results
+(1) both in server 1 and server 2:
+tail -f /var/log/nginx/access.log
+
+(2) load balancer server:
+ab -n 10 localhost/
+
+# you will see 3 requests went to server 10.139.0.3 while 7 requests went to server 10.139.0.4
