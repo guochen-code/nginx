@@ -17,8 +17,8 @@ curl -I http://dexter.kplabs.in/myseed.jpg -> no cache header # by default, it w
 curl -I http://dexter.kplabs.in/nostore.png -> Cache-Control: no-store
 
 There are various cache-control header directives:
-Cache-Control: no-store
-Cache-Control: no-cache
+Cache-Control: no-store.    # not store anywhere
+Cache-Control: no-cache     # cache, but before serve the cached data, it will validate with the backend server whether it is the latest data
 Cache-Control: no-store, no-cache, must-revalidate
 
 Cache-Control: public
