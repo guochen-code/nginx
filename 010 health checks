@@ -1,0 +1,69 @@
+health checks are used to monitor the health of HTTP servers in an upstream group
+if a specific server is not responding, Nginx will stop sending request to it.
+
+# stop one server
+systemctl stop nginx
+ifconfig  # check the ip address of the server
+
+# server back online
+systemctl start nginx
+
+************************************************************************************ types of health checks
+two types of health checks supported by Nginx:
+- active health checks (Nginx Plus which is a paid version of Nginx)
+- passive health checks
+
+active health check:
+periodically check the health of an upstream server by sending special health check requests to each server and check for reponse
+if there is any communication error or timeout occurs or receives response with code other than 2XX or 3XX, the upstream server is marked as unhealthy.
+
+passive health check:
+the nginx monitors the communication between client and the upstream server.
+if the upstream server is not responding or rejecting connections, the passive health check will consider the server to be unhealthy.
+
+**********
+stop server 1
+keep running: curl localhost 
+always show server 2 because server 1 is not running
+
+but in server 1, you can monitor traffic of the server, run the command:
+tcpdump -i eth1 port 80
+then you will see some request actually went to server 1, but it failed, so it then went to server 2 and return this is server 2......
+
+******************************************************************************************************************* health check parameters
+import parameters
+following two parameters can be set in upstream block to control the traffic to the failed upstream servers.
+- max_fails: sets the number of failed attemps that must occur during the fail_timeout period for the server to be marked unavailable
+- fail_timeout: sets the time during which a number of failed attemps must happen for the server to be marked unavailable, and also the time for which the 
+                server is marked unavailble
+
+for testing purpose, install testing tools:
+yum -y install httpd-tools (we use ab from this tools)
+
+ab is one of the great utilities which you can use for a wide variety of use cases, including load testing, you can send thousands of requests to your web server to see 
+how the web server behave and so on.
+
+(1) go to server 1:
+systemctl status nginx -> inactive(dead)
+tcpdump -i eth1 port 80
+
+(2) go to load balancer server:
+ab -n 500 localhost/  # send 500 requests
+
+(3) go to server 1, you will see: some failed requests
+
+(4) go to load balancer server, run again: 
+ab -n 500 localhost/
+
+(5) go to server 1, you will not see any failed requests # why, because we have configuration fail_timeout=30s;
+
+upstream backend {
+  server 10.139.0.3 max_fails=2 fail_timeout=30s;
+  server 10.139.0.4 max_fails=2 fail_timeout=30s;
+  
+server {
+  listen     80;
+  .....
+  }
+}
+
