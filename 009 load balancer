@@ -17,3 +17,10 @@ server {
   }
 }
 
+****************************
+curl 10.139.0.3 -> this is server 02
+curl 10.139.0.4 -> this is server 01
+
+curl localhost -> this is server 02
+curl localhost -> this is server 01 # localhost is the load balancer itself, 50% - 50% to each server
+
