@@ -24,3 +24,21 @@ Cache-Control: no-store, no-cache, must-revalidate
 Cache-Control: public
 Cache-Control: private
 
+************************* how to configure
+cd /etc/nginx/conf.d
+nano web.conf
+
+sever {
+    listen      80;
+    server_name example.com;
+    
+    location / {
+        root /var/www/websites/;
+        index index.html index.html;
+    }
+    location ~ \.(png) {                      # for all files with extension as .png
+        root /var/www/websites/;
+        add_header Cache-Control no-store;     # cache control
+  }
+}
+
