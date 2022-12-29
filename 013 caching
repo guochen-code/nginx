@@ -1,0 +1,26 @@
+benefits of caching:
+- reduce the overhead of server's resources
+- decrease the network bandwidth
+- pages are loaded much more faster
+
+*************** HTTP cache control headers
+in some circumstances, we donot want caching because we want the latest data from the server, data stored in the cache server may be old, like stock market and banking
+cache control headers are used to specify various directives for caching mechanisms.
+these headers are used to define caching policies with various directives provided by the header.
+example:
+- do not store any kind of cache at all.
+- store the cache, but verify with webserver whether file is modified.
+- store the cache for 24 hours.
+
+we have two pictures, one with cache control while the other not:
+curl -I http://dexter.kplabs.in/myseed.jpg -> no cache header # by default, it will cache
+curl -I http://dexter.kplabs.in/nostore.png -> Cache-Control: no-store
+
+There are various cache-control header directives:
+Cache-Control: no-store
+Cache-Control: no-cache
+Cache-Control: no-store, no-cache, must-revalidate
+
+Cache-Control: public
+Cache-Control: private
+
