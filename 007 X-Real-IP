@@ -8,3 +8,18 @@ in this approach, you configure server in a way that the actual Client IP is log
 2 important configuration
 - reverse proxy : proxy_set_header X-Real-IP $remote_addr;
 - backend server : $http_x_real_ip;
+
+*************************
+
+Document - X-Real-IP Configuration
+Reverse Proxy Side
+
+nano /etc/nginx/conf.d/proxy.conf
+
+proxy_set_header X-Real-IP $remote_addr;
+
+Backend Server Side
+
+nano /etc/nginx/nginx.conf
+
+"$http_x_real_ip"
