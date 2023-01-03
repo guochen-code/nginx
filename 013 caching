@@ -42,3 +42,14 @@ sever {
   }
 }
 
+****************************** no-cache: what if the backend server is down and it can no longer validate
+we want that the cache will send a header warming that this is stale data (because not able to validate because the server is down)
+what if you only want to ensure it is latest data, no chance for stale data. that's where header "must-revalidate" kicks in.
+so it should throw an error back if the backend server is down.
+
+*** private vs public 
+add_header Cache-Control private max-age=200; ?????????
+add_header Cache-Control public s-maxage=500; ?????????
+add_header Cache-Control no-cache must-revalidate;
+
+****************************** max-age & s-maxage
