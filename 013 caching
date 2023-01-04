@@ -48,8 +48,48 @@ what if you only want to ensure it is latest data, no chance for stale data. tha
 so it should throw an error back if the backend server is down.
 
 *** private vs public 
-add_header Cache-Control private max-age=200; ?????????
-add_header Cache-Control public s-maxage=500; ?????????
+add_header Cache-Control private max-age=200; private - data considered fresh within 200 seconds, no need to revalidate
+add_header Cache-Control public s-maxage=500; public - particulary for the intermediate cache server, data considered fresh within 500 seconds
 add_header Cache-Control no-cache must-revalidate;
 
 ****************************** max-age & s-maxage
+private cache: browser (individual)
+public cache: intermediate cache server
+
+example:
+
+location ~ \.(html){
+    root /var/www/websites/example;
+    add_header Cache-Control max-age=120; # private(browser) - for any documents ended with .html
+    add_header Cache-Control smax-age=200; # public(intermediate server) - for any documents ended with .html
+  }
+
+location ~ \.(html){
+    root /var/www/websites/example;
+    add_header Cache-Control max-age=120; # for both private(browser) & public(intermediate server) - for any documents ended with .html
+  }
+ 
+****************************** cache time & browser analysis
+server {
+    server_name example.com;
+        location / {
+            root /var/www/websites/example;
+            index index.html index.html;
+         }
+         location ~ \ .(png) {
+            root /var/www/websites/example;
+            expires 1h;
+         }
+         location ~ \.(txt) {
+            root /var/www/websites/example;
+            expires -1;     # -1 means no Cache-Control: no-cache
+         }
+}
+
+# expires for HTTP1.0 while in HTTP1.1 it introduces new headers: max-age/smax-age !!!!!!!!!!!!!!
+
+****************************** keepalive: HTTP1.1 is mandatory while HTTP1.0 is optional
+
+****************************** data & expires header (see above)
+
+
