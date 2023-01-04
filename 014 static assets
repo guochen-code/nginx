@@ -7,3 +7,77 @@ better performance and overall response time back to client will be fast!
 
 ************************* how to configure reverse proxy with static assets
 
+-- in reverse proxy server:
+nano /etc/nginx/conf.d/kp.conf
+
+server {
+  server_name kp.in;
+  
+  location / {
+    proxy_pass http://192.168.189.139; # pass to upstream server
+    proxy_set_header Host $host;
+  }
+}
+
+-- in upstream server:
+nano etc/nginx/conf.d/kap.conf
+
+server {
+  server_name kp.in;
+  
+  location / {
+    root /var/www/websites/kp;
+}
+
+ls -l /var/www/websites/kp -> shows all website files such as css, php, html, js and img etc...  # we can move these files to the reverse proxy !!!!!!!!!!!
+
+cd /var/log/nginx/
+ls -> access.log error.log
+# let's empty all of them, so it is clear to see what will happen next....
+echo > access.log
+echo > error.log
+
+# too see all the logs at one time
+tail -f * # you will see to load a webpage, there are so many requests in this upstream server.....that's why we can move the files to the reverse proxy !!!!!!!!
+
+# you need to copy the entire folder to the reverse proxy, once done
+nano /etc/nginx/conf.d/kp.conf
+
+server {
+  server_name kp.in;
+  
+  location / {
+    proxy_pass http://192.168.189.139; # pass to upstream server
+    proxy_set_header Host $host;
+  }
+  
+  location ~ * \.(css|js|jpe?g|JPG|png) {
+    root /var/www/assests;
+    try_files $uri $ $uri/;
+  }
+  
+}
+
+mkdir /var/wwww/assets
+cp -R css/ img/ js/ master/ vendor/ /var/www/assets/ # copy and move to /var/www/assets/
+
+# so dynamic files will be fetched from the upstream server while the static files will be fechted from local assets from proxy server
+
+niginx -t # testing new configuration
+service nginx reload
+
+# now we are done, we can see the logs again
+in upstream server:
+cd /var/log/nginx/
+ls -> access.log error.log
+# let's empty all of them, so it is clear to see what will happen next....
+echo > access.log
+echo > error.log
+
+# remove the static files
+cd /var/www/websites/kp
+rm -rf css/ img/ js/ master/
+
+cd /var.log/nginx/
+tail -f * -> will see the amount of requests reduced significantly !!!!!!!
+
