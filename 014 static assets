@@ -1,0 +1,9 @@
+client -> reversed proxy -> web server
+700 requests from clients to reversed proxy
+700 requests again from reversed proxy to web server
+
+so store static files in the reversed proxy to reduce the requests made to the web server !
+better performance and overall response time back to client will be fast!
+
+************************* how to configure reverse proxy with static assets
+
