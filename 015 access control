@@ -1,0 +1,46 @@
+whitelist based approach
+
+location / admin {
+  allow 172.18.10.5; # only allow this ip to access admin page
+  deny all;
+}
+
+how to implement on niginx:
+#check ip address of current virtual machine
+ifconfig
+
+nano ....web.conf
+
+server{
+  server_name .....
+  .....
+  .....
+  location /admin {
+    root /var/www/websites/example;
+    index index.html
+    allow 127.0.0.1;
+    allow 192.168.189.137; # current virtual machine's ip
+    deny alll
+  }
+}
+
+# best practice:
+#create a new file
+nano WhiteList
+
+allow 127.0.0.1;
+allow 192.168.189.137;
+
+nano ....web.conf
+
+server{
+  server_name .....
+  .....
+  .....
+  location /admin {
+    root /var/www/websites/example;
+    index index.html
+    include /etc/nginx/conf.d/WhiteList;
+    deny alll
+  }
+}
