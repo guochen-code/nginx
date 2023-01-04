@@ -1,0 +1,75 @@
+this is useful for servers which are providing download related content
+example:
+bandwidth of the server: 100 mbps
+10 clients:
+2: 50 mbps
+8: 2 mbps
+problem: 2 clients will use up all the 100 mbps server bandwidth
+so it is import to limit the connection speed that you give to individual user
+
+# test your machine downloading speed
+wget http://cachefly.cachefly.net.100mb.test -> it shows 17.7 MB/s capability
+
+# download a file
+wget <file link url> -> 593KB/s -> it shows restricted downloading speed even though my intenet can go up to 17.7MB/s
+
+
+************** how to configure in nigix
+server {
+  listen 80;
+  location / {
+    root  /var/www/websites/example;
+    index index.html index.htm;
+  }
+  location /downloads {
+    root /var/www/websites/example;
+    limit_rate 50k;
+  }
+}
+
+nginx -t
+service nginx reload
+
+# we are using server-b to download file from server-a
+# what happen if we use server-b to download the file multiple times simualtenously (multiple connections from the same ip address)
+it is ok, and each individual connection will be given downloading speed of 50k
+
+# you can also limit the amount of connection of one ip address to 1
+in example.conf file:
+
+limit_conn_zone $binary_remote_addr zone=addr:10m;
+
+server {
+  listen 80;
+  location / {
+    root  /var/www/websites/example;
+    index index.html index.htm;
+  }
+  location /downloads {
+    root /var/www/websites/example;
+    limit_rate 50k;
+    limit_conn addr 1;   # only allow 1 connection from one ip address
+  }
+}
+
+Error 503: service temporarily unavailable.
+
+********** another thing
+
+in example.conf file:
+
+limit_conn_zone $binary_remote_addr zone=addr:10m;
+
+server {
+  listen 80;
+  location / {
+    root  /var/www/websites/example;
+    index index.html index.htm;
+  }
+  location /downloads {
+    root /var/www/websites/example;
+    limit_rate_after 50m; # first 50m, allow user to download at full speed, then limit to 50K speed
+    limit_rate 50k;
+    limit_conn addr 1;   # only allow 1 connection from one ip address
+  }
+}
