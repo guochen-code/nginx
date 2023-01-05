@@ -1,0 +1,17 @@
+not supported in nginx, supported in apache server
+
+# verify if apache installed
+rpm -qa | grep httpd
+
+# in this case, we have both nginx and apache in a single server
+# so need to stop nginx first, check if nginx is stopped
+service nginx status
+# check apache is running
+service httpd status -> httpd(pid 3407) is running...
+
+vim /etc/http/conf/httpd.conf
+# search for /mod_auth
+# you will find the second module is for digest authentication
+# so make sure you have this module installed
+# to verify this:
+
