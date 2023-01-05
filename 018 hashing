@@ -1,0 +1,43 @@
+assume you have a document that is named as document
+# how to get the hash of the document when you in the document folder
+md5sum document
+
+# hashing help us identify if a file is modified or not
+# because even if you change one small thing in the file, the hash will be totally different.
+# application: in production environment, for all important files, there will be a program monitoring if these files are modified or not
+# if modification detected, it will notify the administrator
+
+**** encryption vs hashing
+encryption is a 2 way function
+plain text -> use key -> encrypted text -> use key -> plain text
+
+hashing is a 1 way function
+plain text -> use hashing algorithm -> hashed values
+# you will not be able to recover the plain text 
+
+USE of Hashing
+1) your system files do not change. if changed, then there is high probability that Virus has done it.
+2) you can store passwords in Hashed Value instead of Encrypted Value.
+3) verify the integrity of software that you download
+
+case 2):
+there must be a place where user name and password are stored to verify.
+if data are stored in plain text data, dangerous
+1) encryption: secret key has to be stored somewhere. If scret key is leaked, all the data are leaked
+2) hashing: send hashed value, and also store hashed value to verift with each other.
+hashing is 1 way function, no way to recover the plain text, so even hacker gets hold of the data storage, cannot decode.
+# user name usually does not be hashed, only hash password. both user name and hashed value matched, correct credential
+
+use case #2:
+assume you are downloading a software, the hacker can block your download and insert its own version in the communication channel
+so in general, the server will give a hash value of the software
+client computer will verify the hash value.
+if hash value changed, 2 possibilities
+(1) not downloading correctly, some portion of the software must have been crrupted
+(2) from the network, there has been some modification that has been done to the file
+
+
+
+
+
+always check the hash value when you downloading your file. 
