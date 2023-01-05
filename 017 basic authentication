@@ -1,0 +1,29 @@
+************************************** basic authentication
+usually implement with SSL, otherwise it is easy for hacker to capture the username and password (no encryption, only need to decode base64)
+
+---- basic authentication practice:
+# check if httpd-tools is installed
+rpm -qa | grep httpd-tools
+# if not, how to install
+yum -y install httpd-tools
+
+server {
+  server_name .....
+  .......
+  location /admin {
+    root /var/www/websites/example;
+    index index.html;
+    auth_basic = "Basic Authentication";
+    auth_basic_user_file "/etc/nginx/.htppasswd"; # the user name and password stored here in this file
+  }
+} 
+
+# create the htppasswd file
+htpasswd -c /etc/nginx/.htpasswd admin -> asking to enter password # admin here is the user name
+
+# check if created
+cat .htpasswd ->
+admin:ZMsSnfjBzNT3A # password in base64 format
+
+
+
