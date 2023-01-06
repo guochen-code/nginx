@@ -1,5 +1,11 @@
 not supported in nginx, supported in apache server
 
+why digest authentication?
+H1(username+password+realm)
+H2(uri+realm)
+H1,H2+nounce
+nouce is changing constantly over time to avoid replay attack
+
 # verify if apache installed
 rpm -qa | grep httpd
 
@@ -13,5 +19,17 @@ vim /etc/http/conf/httpd.conf
 # search for /mod_auth
 # you will find the second module is for digest authentication
 # so make sure you have this module installed
-# to verify this:
 
+<Location /admin>
+  AuthType Digest
+  AuthName "knowledge.portal"
+  AuthDigestDomain /admin
+  AuthDigestProvider file
+  AuthUserFile /etc/httpd/digest_pwd
+  Require valid-user
+</Location>
+
+cd /etc/httpd/
+htdigest -c digest_pwd knowledge-portal admin # password file / realm: knowledge-portal / username: admin
+
+service httpd restart
