@@ -1,0 +1,14 @@
+information about client request in the access log after the request is processed
+
+(1) client request (2) server response (200, 404, 500...) all write into access log
+
+ll /var/log/nginx -> access.log error.log
+
+#open access log
+less /var/log/nginx/access.log
+# you find
+ip address/request/browser/operating system version/ 
+(it is pre-determined log format you configured in nginx.conf - http block - log_format)
+
+*************** how to customize
+
