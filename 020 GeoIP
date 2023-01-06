@@ -1,0 +1,42 @@
+# specifc website for specific country
+# block country from attacks from a country
+
+# verify if the module is available
+rpm -qa | grep GeoIP
+
+nano niginx.conf
+
+http{
+  geoip_country /usr/share/GeoIP/GeoIP.dat; # this is location of database file, the database is doing IP mapping for the countries # each country - specific ip set
+  map "$host:$geoip_country_code" $deny_by_country {          # host is a variable, can be found in http header; deby_by_country is a variable, its default value is 0
+    ~^example.com:(?!IN) 1; # if not from india, give value of 1 # if any host comes from indian IP, then the value is 1
+    default 0;
+  
+  ........
+  ........
+}
+
+cd /etc/nginx/conf.d
+
+nano conf.d
+
+server {
+  server_name example.com;
+  listen 80;
+  if ($deny_by_country) {return 403; }    # if value is 1, return 403
+  location / {
+    root /var/www/websites/example;
+  }
+}
+
+nginx -t
+service nginx reload
+
+# maxmind.com/geoip/codes -> find abbreviations for all the countries
+
+********************* extended options
+--geoip_country
+--geoip_city
+--geoip_longitude
+--geoip_org # organizations such as universities, specific range of IP addresses
+
