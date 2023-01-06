@@ -1,0 +1,20 @@
+unlike access, you don't have the flexibility to define the log format. It is pre-defined by nginx, you cannot change it
+
+the only thing you can change is:
+(1) level of logging
+(2) where to store
+
+#empty the logs
+echo > /var/log/nginx//access.log
+echo > /var/log/nginx/error.log
+
+# open both
+tail -f /var/log/nginx/*
+
+level of logging:
+example:
+error: try to open an unexisting website
+emergency: configuration failed, nginx not functioning properly
+
+debug logs by default are not enabled. too much infomration.
+
