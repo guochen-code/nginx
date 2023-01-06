@@ -12,3 +12,29 @@ ip address/request/browser/operating system version/
 
 *************** how to customize
 
+under http block:
+
+log_format main '$remote_addr - ..............
+log_format master "$remote_addr" - "$status";
+
+access_log /var/log/nginx/access.log main; # where you want to store the log # main is used to match if you have multiple log formats defined
+
+# downside:
+if host multiple websites on a single server
+if use master, all websites will log using master log format
+niginx allows us to have the flexibility to use different log formats for different websites
+
+# how to:
+nano web.conf
+
+server {
+  server_name example.com
+  access_log /var/log/nginx/example.log main # /var/log/nginx/example.log - where to store; main - log format
+  ....
+}
+
+ll /var/log/nginx ->
+access.log
+error.log
+example.log
+
