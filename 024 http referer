@@ -1,0 +1,28 @@
+# not allow refering, because it is stealing your bandwidth
+
+server {
+  listen    80;
+  ......
+  location ~ \.(jpe?g|png|gif)$ {     # for any image files
+    valid_referers none blocked serverb.com.com *.serverb.com; # if valid referers is none blocked, it is ok - serverb.com or any subdomain within serverb.com
+    if ($invalid_referer) { # otherwise, not ok, return 403
+      return 403;
+   }
+ }
+}
+# server b will not respond to any request from server a as far as image files are concerned
+
+# a way to protect your resources to be copied.
+# above setup, goole.com or any search engine site will not be able to retrieve the images.
+# to allow that
+
+server {
+  listen    80;
+  ......
+  location ~ \.(jpe?g|png|gif)$ {     # for any image files
+    valid_referers none blocked google.com bing.com serverb.com.com *.serverb.com; # if valid referers is none blocked, it is ok - serverb.com or any subdomain within serverb.com
+    if ($invalid_referer) { # otherwise, not ok, return 403
+      return 403;
+   }
+ }
+}
