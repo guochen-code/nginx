@@ -1,1 +1,15 @@
+# we have a file: sshd_config.txt -> 3.8k
+# how to gzip:
+gzip -9 -c sshd_config.txt > sshd.gz -> 1.8k
 
+************** configuration
+nano /etc/nginx/nginx.conf
+
+http {
+   .....
+   .....
+   gzip on;
+   gzip_type text/plain text/css text/xml text/javascript # compression can be mostly applied in the text based data
+   .....
+ }
+ 
