@@ -1,0 +1,3 @@
+# see how many attacks
+cd /var/log/nginx
+less error.log.1 | grep --color learning
