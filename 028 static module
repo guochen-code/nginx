@@ -1,0 +1,61 @@
+static modules are compiled into the nginx srever binary at compile time
+
+step-1: fetch the nginx source
+step-2: fetch the module source
+step-3: build static module along with nginx
+
+nginx -V ->
+you will not see the hello world module because it is dynamic
+but static modules will show up here
+
+systemctl stop nginx
+rm -rf /etc/nginx # remove nginx directory
+rm -f /usr/sbin/nginx # remove nginx binary
+
+cd nginx-demo/
+cd nginx-1.16.0
+ls -> configure option in green
+run the same "configure command" + --add-module=../nginx-hello-world-module # static module command
+make
+make install
+cd /etc/nginx
+systemctl start nginx
+nginx -V -> you will see: --add-module=../nginx-hello-world-module
+
+# you don;t need to do load module directives that you did for dynamic modules
+
+# testing
+nano nginx.conf
+# add
+server {
+  listen 8080;
+  
+  location / {
+    hello_world;
+    }
+  }
+  
+  nginx -t
+  systemctl restart nginx
+  curl localhost:8080 -> you will see "hello world"
+  
+********************************************************
+./configure --prefix=/usr/share/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib64/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --http-client-body-temp-path=/var/lib/nginx/tmp/client_body --pid-path=/var/run/nginx.pid --lock-path=/var/lock/subsys/nginx --user=nginx --group=nginx --with-http_mp4_module --add-module=../nginx-hello-world-module
+
+
+
+make
+make install
+
+
+server {
+listen 8080;
+ 
+location / {
+     hello_world;
+  }
+}
+
+
+systemctl restart nginx
+curl localhost:8080
