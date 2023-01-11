@@ -1,0 +1,16 @@
+# build from scratch, with a server without installing nigx
+
+step-1:
+# install some important libraries such as wget.....
+yum -y install gcc make zlib-devel pcre-devel openssl-devel wget nano
+
+step-2:
+# donwload and install nginx
+# webpage: "nginx.org/download/html" -> select a version you want -> right click the mouse, copy link address
+# go back to terminal, copy the link
+wget <link address>
+-> will get 'nginx-xxxxx.tar.gz' file
+tar -xzvf nginx-xxxxx.tar.gz # decompress
+
+
+step-3:
