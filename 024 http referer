@@ -1,10 +1,11 @@
 # not allow refering, because it is stealing your bandwidth
+# images are host in serverb
 
 server {
   listen    80;
   ......
   location ~ \.(jpe?g|png|gif)$ {     # for any image files
-    valid_referers none blocked serverb.com.com *.serverb.com; # if valid referers is none blocked, it is ok - serverb.com or any subdomain within serverb.com
+    valid_referers none blocked serverb.com.com *.serverb.com; # if valid referers is none blocked, it is ok - serverb.com or any subdomain within serverb.com # only allow visists from server b
     if ($invalid_referer) { # otherwise, not ok, return 403
       return 403;
    }
@@ -26,3 +27,11 @@ server {
    }
  }
 }
+
+application:
+you post your website on youtube and want to see how many visits are from youtube
+you can search based on header http referer which indicates where the request comes from
+
+server A have 1000 requests and server B which is hosting the images will also have 1000 requests, because images have to be loaded
+so you may want to block if you are server B, prevent stealing bandwidth and resources.
+
