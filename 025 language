@@ -1,0 +1,5 @@
+curl --header "Accept-Language: en" example.com/hi.html
+-> this is English version of the website
+
+curl --header "Accept-Language: ja" example.com/hi.html
+-> this is Japanese version of the website
