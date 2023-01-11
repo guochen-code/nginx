@@ -1,0 +1,81 @@
+modules in nginx generally needs to be compiled before referencing them to running nginx.
+while compiling modules. we need to make sure compile it based on same nginx version.
+
+building dynamic modules
+step-1: fetch the ngnix source (same as that of production nginx version)
+step-2: fetch the module source
+step-3: build dynamic module
+step-4: reference module path within nginx configuration
+
+nginx -V # check version
+
+step-1:
+mkdir nginx-demo
+cd nginx-demo
+wget <link address for ngnix> # get the ngnix source
+# decompress it once downloaded
+tar -xzvf nginx-1.16.0,tar.gz
+
+step-2 & 3:
+clone from github
+# make sure you have git installed
+yum -y install git
+
+git clone <link from github>
+# mainly you will have config file and .c file
+
+# go to nginx directory
+cd nginx-1.16.0
+ls -> you will see configure option in green color
+./configure --add-dynamic-module=../nginx-hello-world-module/ # ../nginx-hello-world-module/ is the path of our module
+make modules
+# now you should be able to see module in your objs directory (objs is under nginx-1.16.0 directory)
+ls -> ngx_http_hello_world_module.so
+
+# copy
+cp ngx_http_hello_world_module.so /etc/nginx
+cd /etc/nginx
+mkdir modules
+# move
+mv ngx_http_hello_world_module.so modules/
+
+step-4:
+
+nano nginx.conf
+# at the global section
+
+load_module /etc/nginx/modules/ngx_http_hello_world_modules.so; # load module
+
+events {...
+}
+
+http {
+.....
+}
+
+nginx -t
+
+# test if working
+nano nginx.conf
+# create a new server
+server {
+  listen 8080;
+  
+  location / {
+    hello_world;
+    }
+  }
+  
+ nginx -t
+ 
+ restart nginx
+ 
+ curl localhost:8080
+ -> you should see "hello world"
+ 
+ # if you don't want your module, you can just remove the configuration file from your nginx.
+
+***************************************************
+yum -y install git
+git clone https://github.com/perusio/nginx-hello-world-module
+./configure --add-dynamic-module=../nginx-hello-world-module
