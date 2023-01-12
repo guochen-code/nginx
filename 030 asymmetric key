@@ -14,3 +14,13 @@ cd ~/.ssh
 cat id_rsa.pub # see the key
 cat id_rsa
 
+********************************** application
+whenever I log in through ssh
+
+ssh -i ~/.ssh/dp_rsa root@139.59.30.228 # ~/.ssh/dp_rsa is where the private key is stored
+# sometimes it will ask:
+enter password # this is additional password to private key
+
+
+
+
