@@ -1,0 +1,16 @@
+asymmetric cryptography, uses public and private keys to encrypt and decrypt data
+
+one key in the pair can be shared with everyone; it is called the public key. the other key in the pair is kept secret; it is called the private key.
+
+either of the keys can be used to encrypt a message; the opposite key from the one used to encrypt the message is used for decryption
+
+# generate a public and private key
+ssh-keygen
+->
+your public key has been saved in /root/.ssh/id_rsa.pub
+your private key has been save in /root/.ssh/id_rsa
+
+cd ~/.ssh
+cat id_rsa.pub # see the key
+cat id_rsa
+
