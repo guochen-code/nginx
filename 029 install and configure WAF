@@ -1,1 +1,62 @@
+fetch ngnix source
+fetch module source - firewall
+
+cd /usr/local/src
+cd naxsi-master/
+ls
+cd naxsi_config/
+ls
+nano naxsi_core.rules
+
+cp naxsi_core.rules /etc/nginx
+
+nano nginx.conf
+
+http {
+....
+inlcude /etc/nginx/naxsi_core.rules;
+....
+}
+
+server {
+  listen  80;
+  server_name example.com;
+  
+  location / {
+    root /var/www/html; # need to create this directory
+    index index.html;
+    include /etc/nginx/naxsi.rules
+    }
+  }
+  
+# create a new file under nginx directory
+nano naxsi.rules
+# write the rules in this file  
+LearningMode; # learning mode will not block, still show normal webpage # if you want to block, comment out this line 
+SecRulesEnabled;
+#SecRuleDisabled;
+DeniedUrl "/RequestDenied.txt"; # need to create this file later
+
+## Check & Blocking Rules
+CheckRule "$SQL >=8" BLOCK;
+CheckRule "$RFI >=8" BLOCK;
+CheckRule "$TRAVERSAL >=4" BLOCK;
+CheckRule "$EVADE >=4" BLOCK;
+CheckRule "$XSS >=8" BLOCK;
+
+
+
+nginx -t
+service nginx reload
+
+mkdir /var/www/html
+cd /var/www/html
+nano index.html
+# can just write 'hi'
+nano RequestDenied.txt # under this directory: /var/www/html
+# write 'not pass' # this is custom message, triggered if rules are violated.
+
+
+
+ 
 
