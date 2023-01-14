@@ -1,0 +1,34 @@
+a certificate revocation lsit (CRL) is a list of digital certificates 
+that have been revoked by the issuing certifficate authority 
+before their schedule expiration date and shouuld no longer be trusted
+
+before client trusts the website, it will check if site's certificate is on the CRL
+
+# example why on CRL: breach of private key, compromised, revoke current cerificate
+
+problem above, client needs to look through the CRL, if what you are looking for is the last one in the list,
+it will take some amount of time, not efficient
+
+the online certificate status protocol (OCSP) is an internet protocol used for obtaining the revocation 
+status of an X.509 digital certificate
+OSCP is realsed to an alternative to CRL
+instead of searching through the list, the client sent a request to authority server to verify if it is revoked and get a response from the server.
+
+*************revocation
+certbot revoke --cert-path <cert-path> --key-path <key-path>
+# you can find the paths in:
+cat /etc/nginx/nginx.conf
+
+# when you visit the website
+-> secure connection failed. .... certificate has been revoked.....
+
+# after revoked, use different browser, chrome, you can still open the website, why?
+firefox make use of OCSP
+chrome does not make use of OCSP
+goodle chrome has its own methods for checking revoked certificate called CRLSets
+
+with this, it maintains its own list of CRL's which is collected from certificate authorities
+
+this means that the browser doesnot need to contact the Certificate Authority itself and removes the performance and privacy overheads.
+
+
