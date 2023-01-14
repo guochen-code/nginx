@@ -36,3 +36,52 @@ server {
   }
 }
 
+****************** grading SSL/TLS configuration
+grading website: google for "ssllab"
+
+getting a SSL/TLS certificate and using an HTTPS website is not the ultimate goal.
+setting the right web-server level configuration for TLS is the right approach.
+there are various important configuration that can improve the overall implementation:
+-- OCSP stapling
+-- Perfect Forward Secrecy
+-- Allowed Ciphers and SSL/TLS Versions
+-- HTTP Strict Transport Security
+
+********************* steps for HTTPS website
+step-1: choose the issuer
+step-2: choose a domain
+step-3: generate a certification signing request (CSR)
+step-4: get the CSR signed from the issuer.
+step-5: add the certificate & private keys within Web Server configuration
+# every 90 days reissue for a new certificate
+
+# in a new server
+yum -y install epel-release
+yum -y install nginx
+systemctl start nignx
+systemctl status nginx
+
+# can do step-3 to step-5 together
+yum -y install certbot-nginx
+certbot --nginx -d labsinternal.com # labsinternal.com is domain
+-> you will answer a couple of questions
+# and it's done
+
+nano /etc/nginx/nginx.conf
+# you can see it automaticall add the ssl related configuration:
+"listen [::]:433 ssl ipv6only=on; # manged by Certbot # listen for https
+listen 443 ssl; # managed by Certbot
+ssl_certificate /etc/letsencrypt/live/labsinternal.com/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/labsinternal.com/privkey.com; # managed by Certbot
+include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+ssl_dhparam /etc/lensencrypt/ssl-dhparams.pem; # managed by Certbot"
+
+nginx-t
+systemctl restart nginx
+
+# when done, you can verify:
+curl https://labsinternal.com
+
+
+
+
