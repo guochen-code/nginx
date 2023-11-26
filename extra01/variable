@@ -1,0 +1,20 @@
+set $mo 'No';
+
+# check if monday
+  if ( $date_local ~ 'Monday ) {
+    set $weekend 'Yes';
+  }
+
+    location /is_monday {
+      return 200 $weekend;
+    }
+$date_local is nginx built-in variable
+**************************************
+# check static API key
+if ( $arg_apikey !=1234) {
+  return 401 "incorrect API Key";
+}
+
+location /inspect {
+    return 200 "Name: $arg_name";
+  }
