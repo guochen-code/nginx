@@ -1,3 +1,5 @@
+# under server context
+
 set $mo 'No';
 
 # check if monday
