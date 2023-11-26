@@ -1,0 +1,23 @@
+priority
+
+1. exact match = uri
+2. preferential prefix match ^~ uri
+3. regular expression match ~* uri
+4. prefix match uri
+
+location ^~ /Greet2 {
+    return 200 'hello from "/greet" location.';
+    }
+
+location = /Greet2 {
+  return 200 'hello from "/greet" location - exact match.';
+  }   
+
+
+location ~ /Greet2 {
+    return 200 'hello from "/greet" location - regex match case sensitive.';
+    }
+
+location ~* /Greet2 {
+    return 200 'hello from "/greet" location - regex match case insensitive.';
+    }
