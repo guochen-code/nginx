@@ -1,0 +1,12 @@
+rewrite ^~/user/(\w+) /greet/$1 last;
+rewrite ^/greet/john /thumn.png;
+
+location /greet {
+  return 200 "Hello User";
+}
+
+location = /greet/john {
+  return 200 "Hello John";
+}
+
+redirect will change the url (sent by client) displayed on the browser while rewrite will not change the url sent by the client
