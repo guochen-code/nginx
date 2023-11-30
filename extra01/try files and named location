@@ -1,0 +1,25 @@
+server {
+  listen 80;
+  server_name 167.99.93.26;
+
+  root /sites/demo;
+
+  try_files $uri /cat.png /greet /friendly_404;
+
+  location /friendly_404 {
+    return 404 "sorry.";
+  }
+
+  location /greet {
+    return 200 "hello user";
+  }
+}
+
+167.99.93.26/nothing -> will go to friendly_404
+why not /greet, because it is not under root folder
+$uri is built-in uri
+only the very last element cause the rewrite
+all these before the last have nginx check relative to the root directory
+which means /nothing will be rewritten to /friendly_404, re-evaluated and caught by the matching location
+
+
