@@ -1,0 +1,26 @@
+nginx provides two default logs: access log and error log
+
+
+# create a specifc log file to log specific location access history
+
+location /secure {
+  access_log /var/log/nginx/secure.access.log;
+  return 200 "welcome to secure area.";
+  }
+}
+
+if you want to log it in default access log
+
+location /secure {
+  access_log /var/log/nginx/secure.access.log;
+  access_log /var/log/nginx/access.log;
+  return 200 "welcome to secure area.";
+  }
+}
+
+# for site receiving very high traffic, you can disable logging on it
+location /secure {
+  access_log off;
+  return 200 "welcome to secure area.";
+  }
+}
