@@ -249,3 +249,8 @@ sudo nano hosts
 
 (2) run the .sh file
 sudo ./test.sh
+
+############################
+127.0.0.1 gamerstechsupport.com www.gamerstechsupport.com
+curl http://gamerstechsupport.com
+curl http://localhost
