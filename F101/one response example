@@ -1,0 +1,267 @@
+write a script to install nginx on a fresh ubuntu 22.04 installation. create a basic index.html file with the server's hostname and the words Hello World!. ensure the nginx configuration uses the index.html as the default site page. create one script for each of these domains:
+
+
+    "coderssupporthub.com"
+    "codersunite.live"
+    "codersweb.site"
+
+
+configure nginx for http traffic only.
+
+
+
+
+I'll create three separate scripts for each domain. Each script will install Nginx, create a basic index.html, and configure Nginx for HTTP traffic.
+
+
+1. Script for coderssupporthub.com (install_coderssupporthub.sh):
+```bash
+#!/bin/bash
+
+
+# Update system and install nginx
+sudo apt update
+sudo apt install nginx -y
+
+
+# Create directory for the website
+sudo mkdir -p /var/www/coderssupporthub.com
+
+
+# Create index.html with hostname and Hello World
+echo "<html>
+<head>
+    <title>Coders Support Hub</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <p>Server Hostname: $(hostname)</p>
+    <p>Welcome to Coders Support Hub</p>
+</body>
+</html>" | sudo tee /var/www/coderssupporthub.com/index.html
+
+
+# Create Nginx server block configuration
+echo "server {
+    listen 80;
+    listen [::]:80;
+
+
+    root /var/www/coderssupporthub.com;
+    index index.html;
+
+
+    server_name coderssupporthub.com www.coderssupporthub.com;
+
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}" | sudo tee /etc/nginx/sites-available/coderssupporthub.com
+
+
+# Enable the site
+sudo ln -s /etc/nginx/sites-available/coderssupporthub.com /etc/nginx/sites-enabled/
+
+
+# Remove default nginx site
+sudo rm -f /etc/nginx/sites-enabled/default
+
+
+# Test nginx configuration
+sudo nginx -t
+
+
+# Restart nginx
+sudo systemctl restart nginx
+```
+
+
+2. Script for codersunite.live (install_codersunite.sh):
+```bash
+#!/bin/bash
+
+
+# Update system and install nginx
+sudo apt update
+sudo apt install nginx -y
+
+
+# Create directory for the website
+sudo mkdir -p /var/www/codersunite.live
+
+
+# Create index.html with hostname and Hello World
+echo "<html>
+<head>
+    <title>Coders Unite</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <p>Server Hostname: $(hostname)</p>
+    <p>Welcome to Coders Unite</p>
+</body>
+</html>" | sudo tee /var/www/codersunite.live/index.html
+
+
+# Create Nginx server block configuration
+echo "server {
+    listen 80;
+    listen [::]:80;
+
+
+    root /var/www/codersunite.live;
+    index index.html;
+
+
+    server_name codersunite.live www.codersunite.live;
+
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}" | sudo tee /etc/nginx/sites-available/codersunite.live
+
+
+# Enable the site
+sudo ln -s /etc/nginx/sites-available/codersunite.live /etc/nginx/sites-enabled/
+
+
+# Remove default nginx site
+sudo rm -f /etc/nginx/sites-enabled/default
+
+
+# Test nginx configuration
+sudo nginx -t
+
+
+# Restart nginx
+sudo systemctl restart nginx
+```
+
+
+3. Script for codersweb.site (install_codersweb.sh):
+```bash
+#!/bin/bash
+
+
+# Update system and install nginx
+sudo apt update
+sudo apt install nginx -y
+
+
+# Create directory for the website
+sudo mkdir -p /var/www/codersweb.site
+
+
+# Create index.html with hostname and Hello World
+echo "<html>
+<head>
+    <title>Coders Web</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <p>Server Hostname: $(hostname)</p>
+    <p>Welcome to Coders Web</p>
+</body>
+</html>" | sudo tee /var/www/codersweb.site/index.html
+
+
+# Create Nginx server block configuration
+echo "server {
+    listen 80;
+    listen [::]:80;
+
+
+    root /var/www/codersweb.site;
+    index index.html;
+
+
+    server_name codersweb.site www.codersweb.site;
+
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}" | sudo tee /etc/nginx/sites-available/codersweb.site
+
+
+# Enable the site
+sudo ln -s /etc/nginx/sites-available/codersweb.site /etc/nginx/sites-enabled/
+
+
+# Remove default nginx site
+sudo rm -f /etc/nginx/sites-enabled/default
+
+
+# Test nginx configuration
+sudo nginx -t
+
+
+# Restart nginx
+sudo systemctl restart nginx
+```
+
+
+To use these scripts:
+
+
+1. Create each script in a separate file with the names mentioned above
+2. Make them executable:
+```bash
+chmod +x install_coderssupporthub.sh
+chmod +x install_codersunite.sh
+chmod +x install_codersweb.sh
+```
+
+
+3. Run the appropriate script for the domain you want to set up:
+```bash
+./install_coderssupporthub.sh
+# or
+./install_codersunite.sh
+# or
+./install_codersweb.sh
+```
+
+
+Each script will:
+- Update the system
+- Install Nginx
+- Create a website directory
+- Create a basic index.html file with the server's hostname and "Hello World!"
+- Configure Nginx for the specific domain
+- Enable the site
+- Remove the default Nginx site
+- Test and restart Nginx
+
+
+Remember to:
+1. Update your DNS records to point to your server's IP address
+2. Make sure port 80 is open in your firewall
+3. Run only one script per server unless you're planning to host multiple domains on the same server
+
+
+
+
