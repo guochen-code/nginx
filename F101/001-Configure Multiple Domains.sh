@@ -254,3 +254,36 @@ sudo ./test.sh
 127.0.0.1 gamerstechsupport.com www.gamerstechsupport.com
 curl http://gamerstechsupport.com
 curl http://localhost
+
+
+############################ undo everything like a new instance:
+# Remove the symbolic links in sites-enabled
+sudo rm /etc/nginx/sites-enabled/gamerstechsupport.com
+sudo rm /etc/nginx/sites-enabled/gamerstech.live
+sudo rm /etc/nginx/sites-enabled/gamerstech.site
+
+
+# Remove the configuration files in sites-available
+sudo rm /etc/nginx/sites-available/gamerstechsupport.com
+sudo rm /etc/nginx/sites-available/gamerstech.live
+sudo rm /etc/nginx/sites-available/gamerstech.site
+
+
+# Remove the web directories created for the domains
+sudo rm -rf /var/www/gamerstechsupport.com
+sudo rm -rf /var/www/gamerstech.live
+sudo rm -rf /var/www/gamerstech.site
+
+
+# Test the Nginx configuration
+sudo nginx -t
+
+
+# Restart Nginx to apply changes
+sudo systemctl restart nginx
+
+
+# Uninstall Nginx (optional step)
+sudo apt-get remove --purge nginx nginx-common
+sudo apt-get autoremove
+sudo apt-get autoclean
